@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: idshare-postgres
+    image: "bitnami/postgresql"
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USERNAME=root
+      - POSTGRESQL_PASSWORD=password
+      - POSTGRESQL_DATABASE=database
+    volumes:
+      - "postgresql_data:/bitnami/postgresql"
+
+volumes:
+  postgresql_data:
+    driver: local
