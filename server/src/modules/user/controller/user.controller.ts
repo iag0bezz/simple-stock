@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserCreateDto } from '../domain/dto/user.create.dto';
-import { UserService } from '../service/auth.service';
+import { UserService } from '../service/user.service';
 import { UserModel } from '../domain/user.entity';
 
 @Controller('user')

@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity('users')
@@ -15,6 +21,11 @@ export class UserModel {
   @Column('text', { select: false })
   @ApiProperty()
   password: string;
+
+  @Column()
+  @CreateDateColumn()
+  @ApiProperty({ example: 'date' })
+  date: Date;
 
   @BeforeInsert()
   beforeInsert() {
