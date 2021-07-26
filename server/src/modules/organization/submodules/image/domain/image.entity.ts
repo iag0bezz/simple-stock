@@ -30,7 +30,9 @@ export class OrganizationImageModel {
   @Column('text')
   organizationId: string;
 
-  @OneToOne(() => OrganizationModel, (organization) => organization.image)
+  @OneToOne(() => OrganizationModel, (organization) => organization.image, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'organizationId' })
   organization: Promise<OrganizationModel>;
 

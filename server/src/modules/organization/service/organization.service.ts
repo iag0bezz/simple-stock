@@ -20,7 +20,7 @@ export class OrganizationService {
   ) {}
 
   findAll(userId: string): Promise<OrganizationModel[]> {
-    return this.repository.find({ where: { userId } });
+    return this.repository.find({ where: { userId }, relations: ['image'] });
   }
 
   findById(id: string): Promise<OrganizationModel> {
@@ -28,10 +28,13 @@ export class OrganizationService {
   }
 
   find(details: OrganizationFindDto): Promise<OrganizationModel> {
-    return this.repository.findOne({
-      id: details.id,
-      userId: details.userId,
-    });
+    return this.repository.findOne(
+      {
+        id: details.id,
+        userId: details.userId,
+      },
+      { relations: ['image'] },
+    );
   }
 
   async create(userId: string, details: OrganizationCreateDto) {

@@ -7,6 +7,8 @@ export const RequiredVariables = [
   'DB_PORT',
   'JWT_SECRET',
   'JWT_EXPIRES',
+  'JWT_REFRESH_SECRET',
+  'JWT_REFRESH_EXPIRES',
 ];
 
 interface Configuration {

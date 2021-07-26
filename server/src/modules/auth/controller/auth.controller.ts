@@ -10,16 +10,16 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { UserLoginDto } from 'src/modules/user/domain/dto/user.login.dto';
 import { UserService } from 'src/modules/user/service/user.service';
+import { AuthLoginDto } from '../domain/dto/auth.login.dto';
+import { AuthRefreshDto } from '../domain/dto/auth.refresh.dto';
+import { AuthRegisterDto } from '../domain/dto/auth.register.dto';
 import { JwtAuthGuard } from '../guard/auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     @Inject(forwardRef(() => UserService)) private service: UserService,
-    private config: ConfigService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -37,12 +37,28 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() details: UserLoginDto) {
-    const token = await this.service.login(details);
+  async login(@Body() details: AuthLoginDto) {
+    return await this.service.login(details);
+  }
 
-    return {
-      token: token,
-      expires: this.config.get('JWT_EXPIRES'),
-    };
+  @Post('register')
+  async register(@Body() details: AuthRegisterDto) {
+    const user = await this.service.findByEmail(details.email);
+
+    if (user !== undefined) {
+      throw new HttpException('Email already in use.', HttpStatus.CONFLICT);
+    }
+
+    await this.service.create(details);
+
+    return await this.service.login({
+      email: details.email,
+      password: details.password,
+    });
+  }
+
+  @Post('refresh')
+  async refresh(@Body() details: AuthRefreshDto) {
+    return await this.service.refreshToken(details);
   }
 }
